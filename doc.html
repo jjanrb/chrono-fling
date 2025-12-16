@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+        img
+        {
+            margin: 30px auto 0px;
+        }
+        img.landscape
+        {
+            width: 100%;
+            max-width: max-content;
+            margin: 0;
+        }
+        img.portrait
+        {
+            height: 70vh;
+            max-height: max-content;
+            float: left;
+            margin: 0px 30px 50px 0px;
+        }
+        h2
+        {
+            clear: both;
+            margin-top: 50px;
+        }
+        *
+        {
+            font-family: 'Open Sans', sans-serif;
+        }
+        body
+        {
+            margin: 10px auto;
+            width: 80%;
+            max-width: 1000px;
+        }
+        br
+        {
+            margin-bottom: 20px;
+        }
+        h1
+        {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentation</h1>
+    <h2>Quicklinks</h2>
+    <ul>
+        <li><a href="proposal.html">Proposal</a></li>
+        <li><a href="index.html">Game</a></li>
+    </ul>
+    <h2>Resources</h2>
+    <ul>
+        <h3>Assets</h3>
+        <li>Font Used: <a href="https://fonts.google.com/specimen/Comfortaa">Comfortaa</a></li>
+        <li>Otherwise everything was drawn within pixi</li>
+        <h3>Sources</h3>
+        <li><a href="https://pixijs.com/">PixiJS</a></li>
+        <li><a href="http://victorjs.org/">Victor.js</a> used for vectors</li>
+        <li><a href="https://github.com/goldfire/howler.js">Howler</a> used for audio</li>
+        <li><a href="https://github.com/typekit/webfontloader">webfontloader</a> used for loading online fonts into javascript and
+        <a href="https://stackoverflow.com/questions/46218500/pixijs-load-custom-font">this stack overflow post</a></li>
+        <li><a href="https://www.bfxr.net/">BFXR</a> used for loading creating sounds</li>
+    </ul>
+    <h2>Mockups</h2>
+    <img src="src/mockup-1.png" alt="mockup sketch of site" class="portrait">
+    <img src="src/mockup-2.png" alt="mockup sketch of site" class="portrait">
+    <h1 style="clear: both;">Challenges</h1>
+    <section>
+        <ul>
+            <li>I originally tried to use <a href="https://github.com/davidfig/pixi-viewport">pixi-viewport</a> as a camera but after a lot of trouble with it using import statements but not being a module, I decided to make my own camera instead.</li>
+            <li>APP.renderer.plugins.interaction.mouse.global doesn&#39;t exist in pixi 7 so instead I needed to add event listeners to keep track of the position myself</li>
+            <li>Victor vectors don&#39;t act like structs meaning doing an operation like subtract() will change the base. This means that if I want to do any math operations on vectors, I usually would need to clone it first so I don&#39;t unintentionally change the original reference</li>
+            <li>Sometimes, there are constant values that cannot be initialized until the page is loaded. This means that they cannot be scoped to the whole script as &quot;const&quot; therefore there are some &quot;let&quot; variables that are fully capitalized like consts. I wanted the code style to indicate that should be treated as a constant even if it is not technically one</li>
+            <li>Having a camera means that things like collisions, scaling, and other transformation related things need to be written in a way that is relative so that they can work at any position and scale.<ul>
+            <li>I ran into an issue where scaling an object seemed to make the collider scale up too much, but actually it was because I was drawing the collider on top of the object getting scaled meaning it was drawing both the scaled up radius and getting scaled up by the object.<ul>
+            <li>This is why I made the debug object which is completely independent from the other objects and is a container drawn on top of the scenes</li>
+            <li>This also means that debugging can be enabled and disabled very easily with just a single boolean since all debugging code is centralized in a single object</li>
+            <li>Press <code>/</code> to toggle debug mode</li>
+            </ul>
+            </li>
+            </ul>
+            </li>
+            <li>Fonts would load after I already made the style
+            </li>
+            <li>Howler doesn&#39;t play sound until there is a user interaction</li>
+            <li>Doesn&#39;t show on mobile unless you view in desktop mode</li>
+            </ul>
+            
+    </section>
+    <h1 style="clear: both;">Cool Things I Did</h1>
+    <section>
+        <ul>
+            <li>Documented and organized code<ul>
+            <li>Every single function and method is commented</li>
+            <li>Variables whos meaning is not clear from the name are commented</li>
+            </ul>
+            </li>
+            <li>Tried to program using good OOP design principles and patterns, adapted to js using my own intuition<ul>
+            <li>Such as managers</li>
+            </ul>
+            </li>
+            <li>For collisions, I used square distance to optimize<ul>
+            <li>No need to do the square root</li>
+            </ul>
+            </li>
+            <li>I made different managers to make code mode modular and reusable<ul>
+            <li>Input manager</li>
+            <li>Object manager</li>
+            <li>Physics manager</li>
+            <li>Scene manager</li>
+            <li>Audio manager</li>
+            <li>Menu manager</li>
+            </ul>
+            </li>
+            <li>I made a camera object which encapsulated and simplified transforming the scene<ul>
+            <li>Bounds for the camera to not go past</li>
+            <li>Ease zoom to position</li>
+            <li>Translate canvas vector to world vector</li>
+            <li>Computes the visible rectangle shown on the screen</li>
+            </ul>
+            </li>
+            <li>Robust debugging capabilities<ul>
+            <li>Draw accurate hitboxes on a separate container over the scenes</li>
+            <li>All encapsulated within an object which can easily be disabled</li>
+            </ul>
+            </li>
+            <li>Object pooling<ul>
+            <li>Don&#39;t destroy any objects, just cycle through a pool of existing objects</li>
+            </ul>
+            </li>
+            <li>Flexible audio managing system</li>
+            <li>Enums for a more understandable coding structure<ul>
+            <li>Freeze the object of numbers</li>
+            </ul>
+            </li>
+            <li>Aiming indicator<ul>
+            <li>Lerping</li>
+            <li>Keep certain elements with a minimum like the number of flings so that it is readable</li>
+            </ul>
+            </li>
+            <li>Game feel<ul>
+            <li>I tuned the easing, speed, physics, and time warp to make it feel natural and nice</li>
+            <li>I made it so that the document listens to mouse up and move so that way you can drag outside of the canvas, but you still need to click inside the canvas to trigger mouse down</li>
+            <li>Player gets thinner based on speed so it almost seems squishy</li>
+            </ul>
+            </li>
+            <li>Finite state machines<ul>
+            <li>used to organize player states and game states</li>
+            </ul>
+            </li>
+            </ul>            
+    </section>
+    <h1 style="clear: both;">Take Aways</h1>
+    <section>
+        <ul>
+            <li>When extending another class, make sure to be super careful then making your own properties so that you don&#39;t accidently override an existing one. I did this with scale which I was trying to figure out why it wasn&#39;t showing up for like 1 hour.</li>
+            <li>You can use matrices for cameras just like in MonoGame</li>
+            <li>How to write my own lerp function</li>
+            <li>I finally put two and two together and realized that the easing functions I have been making can be more concisely summed up by my lerp function</li>
+            </ul>            
+    </section>
+</body>
+</html>
